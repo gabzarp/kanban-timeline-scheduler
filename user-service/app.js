@@ -3,6 +3,7 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const mongo = require('koa-mongo')
+const user = require('./controllers/UserController')
 const app = new Koa();
 
 app.use(mongo({
@@ -21,7 +22,8 @@ app.use(bodyParser());
 
 app.use(logger());
 
-router.get('/',(ctx)=>{ctx.body= "howdy partner"});
+router.get('/',(ctx)=>{ctx.body= "howdy partner"})
+      .post('/user', user.createUser);
 
 app.use(router.routes());
 
