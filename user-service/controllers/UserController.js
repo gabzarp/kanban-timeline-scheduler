@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const mongo = require('koa-mongo');
 const user = {
     createUser: (ctx) =>{
         return bcrypt.hash(ctx.request.body.password, 10)

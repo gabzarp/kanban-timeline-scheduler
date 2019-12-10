@@ -24,7 +24,11 @@ app.use(logger());
 
 router.get('/',(ctx)=>{ctx.body= "howdy partner"})
       .post('/user', user.createUser)
-      .post('/login', user.login);
+      .post('/login', user.login)
+      .get('/user/:id', user.getUsertById)
+      .delete('/user/:id', user.deleteUser)
+      .patch('/user/:id', user.updateUser)
+      .get('/users', user.getAllUsers);
 
 app.use(router.routes());
 
