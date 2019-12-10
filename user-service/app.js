@@ -23,7 +23,8 @@ app.use(bodyParser());
 app.use(logger());
 
 router.get('/',(ctx)=>{ctx.body= "howdy partner"})
-      .post('/user', user.createUser);
+      .post('/user', user.createUser)
+      .post('/login', user.login);
 
 app.use(router.routes());
 

@@ -1,12 +1,30 @@
-
+const bcrypt = require('bcrypt');
 const user = {
     createUser: (ctx) =>{
-        return ctx.db.collection('user').insertOne(ctx.request.body)
+        return bcrypt.hash(ctx.request.body.password, 10)
+        .then((results)=>{
+            ctx.request.body.password = results;
+            return ctx.db.collection('user').insertOne(ctx.request.body)
+        })
         .then((results)=>{
             ctx.body = results;
             ctx.status = 200;
         })
         .catch(err =>{ctx.body = 'error: ' + err; ctx.status = 500;})
+    },
+    login: (ctx) =>{
+        return ctx.db.collection('user').findOne({"name": ctx.request.body.name})
+        .then((results) => {
+            return bcrypt.compare(ctx.request.body.password, results.password);
+        })
+        .then(results =>{
+            ctx.body = results;
+            ctx.status = 200;
+        })
+        .catch(err =>{
+            ctx.body = err;
+            ctx.status = 500;
+        })
     },
     getUsertById: (ctx) =>{
         return ctx.db.collection('user').findOne({"_id": mongo.ObjectID(ctx.params.id)})
